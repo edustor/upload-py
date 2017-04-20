@@ -29,7 +29,6 @@ def upload_pages_url():
     if not url.startswith("http"):
         abort(400, "Incorrect url")
 
-    with requests.get(url) as response:
-        event = handle_upload(uploader_id, response.content)
-
+    response = requests.get(url)
+    event = handle_upload(uploader_id, response.content)
     return json.dumps(event)
