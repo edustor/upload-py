@@ -10,9 +10,9 @@ from upload import mongo, rabbit_channel
 gridfs = GridFSBucket(mongo['edustor-files'])
 
 
-def handle_upload(uploader_id, file):
+def handle_upload(uploader_id, data):
     upload_id = str(uuid.uuid4())
-    gridfs.upload_from_stream("upload-{}.pdf".format(upload_id), file.stream)
+    gridfs.upload_from_stream("upload-{}.pdf".format(upload_id), data)
 
     event = {
         "uuid": upload_id,
