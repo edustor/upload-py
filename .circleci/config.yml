@@ -12,7 +12,7 @@ jobs:
       - restore_cache:
           key: edustor-upload-{{ checksum "requirements.txt" }}-{{ checksum "test-requirements.txt" }}
       - run: |
-          pip3 install --cache-dir pip-cache -r requirements.txt
+          pip3 install --cache-dir pip-cache -r requirements.txt \
                                              -r commons_auth/requirements.txt
 #          pip3 install --cache-dir pip-cache -r test-requirements.txt
 #      - run: |
