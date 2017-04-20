@@ -13,7 +13,7 @@ app = Flask(__name__)
 app.config["MAX_CONTENT_LENGTH"] = 50 * 1024 ** 2
 
 mongo = MongoClient()
-gridfs = GridFSBucket(mongo['edustor-files'], bucket_name="pages-uploads")
+gridfs = GridFSBucket(mongo['edustor-files'])
 
 rabbit_connection = pika.BlockingConnection(pika.ConnectionParameters())
 rabbit_channel = rabbit_connection.channel()
@@ -29,8 +29,8 @@ def upload_pages():
     gridfs.upload_from_stream("upload-{}.pdf".format(upload_id), file.stream)
 
     event = {
-        "upload_id": upload_id,
-        "uploader_id": auth.account_id,
+        "uuid": upload_id,
+        "userId": auth.account_id,
         "timestamp": int(datetime.now().timestamp()),
         "targetLessonId": None
     }
