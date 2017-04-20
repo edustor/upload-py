@@ -6,16 +6,17 @@ from gridfs import GridFSBucket
 from pymongo import MongoClient
 from datetime import datetime
 import pika
+import os
 
 from commons_auth import requires_scope, auth
 
 app = Flask(__name__)
 app.config["MAX_CONTENT_LENGTH"] = 50 * 1024 ** 2
 
-mongo = MongoClient()
+mongo = MongoClient(os.environ["edustor.mongo.uri"])
 gridfs = GridFSBucket(mongo['edustor-files'])
 
-rabbit_connection = pika.BlockingConnection(pika.ConnectionParameters())
+rabbit_connection = pika.BlockingConnection(pika.ConnectionParameters(os.environ["edustor.rabbit.host"]))
 rabbit_channel = rabbit_connection.channel()
 
 
