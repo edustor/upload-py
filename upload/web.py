@@ -10,7 +10,7 @@ app.config["MAX_CONTENT_LENGTH"] = 50 * 1024 ** 2
 
 
 @app.route("/api/v1/upload/pages", methods=["POST"])
-@requires_scope(["upload"])
+@requires_scope("upload")
 def upload_pages():
     if "file" not in request.files:
         abort(400, "No file field in request")
