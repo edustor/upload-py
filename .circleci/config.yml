@@ -8,6 +8,7 @@ jobs:
       TERM: dumb
     steps:
       - checkout
+      - run: git submodule sync && git submodule update --init
       - restore_cache:
           key: edustor-upload-{{ checksum "requirements.txt" }}-{{ checksum "test-requirements.txt" }}
       - run: |
@@ -40,6 +41,7 @@ jobs:
       SWARM_CERT_URL: https://wutiarn.keybase.pub/swarm/cert.pem
     steps:
       - checkout
+      - run: git submodule sync && git submodule update --init
       - setup_remote_docker
       - run:
           name: Build docker image
