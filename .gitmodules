@@ -1,3 +1,0 @@
-[submodule "commons_auth"]
-	path = commons_auth
-	url = git@github.com:edustor/upload.git
