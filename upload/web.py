@@ -7,7 +7,7 @@ from pymongo import MongoClient
 from datetime import datetime
 import pika
 
-from commons_auth.decorator import requires_scope
+from commons_auth import requires_scope, auth
 
 app = Flask(__name__)
 app.config["MAX_CONTENT_LENGTH"] = 50 * 1024 ** 2
@@ -30,13 +30,12 @@ def upload_pages():
 
     event = {
         "upload_id": upload_id,
-        "uploader_id": "",
+        "uploader_id": auth.account_id,
         "timestamp": int(datetime.now().timestamp()),
         "targetLessonId": None
     }
 
-    rabbit_channel.basic_publish("internal.edustor", "uploaded.pdf.pages.processing", json.dumps(event))
+    event_json = json.dumps(event)
+    rabbit_channel.basic_publish("internal.edustor", "uploaded.pdf.pages.processing", event_json)
 
-    return json.dumps({
-        "upload_id": upload_id
-    })
+    return event_json
