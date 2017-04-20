@@ -12,12 +12,9 @@ jobs:
           key: edustor-upload-{{ checksum "requirements.txt" }}-{{ checksum "test-requirements.txt" }}
       - run: |
           pip3 install --cache-dir pip-cache -r requirements.txt
-          pip3 install --cache-dir pip-cache -r test-requirements.txt
-      - run: |
-          pytest
-      - store_artifacts:
-          path: ~/edustor-upload/test_results
-          destination: edustor-upload-test-results
+#          pip3 install --cache-dir pip-cache -r test-requirements.txt
+#      - run: |
+#          pytest
       - save_cache:
           key: edustor-upload-{{ checksum "requirements.txt" }}-{{ checksum "test-requirements.txt" }}
           paths:
