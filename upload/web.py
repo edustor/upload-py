@@ -36,6 +36,11 @@ def upload_pages():
     }
 
     event_json = json.dumps(event)
-    rabbit_channel.basic_publish("internal.edustor", "uploaded.pdf.pages.processing", event_json)
+    rabbit_channel.basic_publish(exchange="internal.edustor",
+                                 routing_key="uploaded.pdf.pages.processing",
+                                 body=event_json,
+                                 properties=pika.BasicProperties(
+                                     content_type='application/json'
+                                 ))
 
     return event_json
