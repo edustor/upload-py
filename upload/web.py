@@ -26,7 +26,7 @@ def upload_pages():
         abort(400, "No file field in request")
     file = request.files["file"]
     upload_id = str(uuid.uuid4())
-    # gridfs.upload_from_stream("upload-{}.pdf".format(upload_id), file.stream)
+    gridfs.upload_from_stream("upload-{}.pdf".format(upload_id), file.stream)
 
     event = {
         "upload_id": upload_id,
