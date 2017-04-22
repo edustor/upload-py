@@ -12,7 +12,6 @@ gridfs = GridFSBucket(mongo['edustor-files'])
 
 def handle_upload(uploader_id, data):
     upload_id = str(uuid.uuid4())
-    gridfs.upload_from_stream("upload-{}.pdf".format(upload_id), data)
 
     event = {
         "uuid": upload_id,
@@ -23,6 +22,8 @@ def handle_upload(uploader_id, data):
 
     event_json = json.dumps(event)
     channel = pika_connection_manager.get_channel()
+
+    gridfs.upload_from_stream("upload-{}.pdf".format(upload_id), data)
     channel.basic_publish(exchange="internal.edustor",
                           routing_key="uploaded.pdf.pages.processing",
                           body=event_json,
