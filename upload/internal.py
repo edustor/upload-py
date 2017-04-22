@@ -5,7 +5,7 @@ from datetime import datetime
 import pika
 from gridfs import GridFSBucket
 
-from upload import mongo, rabbit_channel
+from upload import mongo, pika_connection_manager
 
 gridfs = GridFSBucket(mongo['edustor-files'])
 
@@ -22,11 +22,13 @@ def handle_upload(uploader_id, data):
     }
 
     event_json = json.dumps(event)
-    rabbit_channel.basic_publish(exchange="internal.edustor",
-                                 routing_key="uploaded.pdf.pages.processing",
-                                 body=event_json,
-                                 properties=pika.BasicProperties(
-                                     content_type='application/json'
-                                 ))
+    channel = pika_connection_manager.get_channel()
+    channel.basic_publish(exchange="internal.edustor",
+                          routing_key="uploaded.pdf.pages.processing",
+                          body=event_json,
+                          properties=pika.BasicProperties(
+                              content_type='application/json'
+                          ))
+    channel.close()
 
     return event
