@@ -4,7 +4,7 @@ import requests
 from flask import Flask, request, abort
 
 from commons_auth import requires_scope, auth
-from upload.internal import handle_upload
+from edustor_upload.internal import handle_upload
 
 app = Flask(__name__)
 app.config["MAX_CONTENT_LENGTH"] = 50 * 1024 ** 2

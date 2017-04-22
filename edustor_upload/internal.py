@@ -2,11 +2,13 @@ import json
 import uuid
 from datetime import datetime
 
+import logging
 import pika
 from gridfs import GridFSBucket
 
-from upload import mongo, pika_connection_manager
+from edustor_upload import mongo, pika_connection_manager
 
+_logger = logging.getLogger("edustor_upload.internal")
 gridfs = GridFSBucket(mongo['edustor-files'], "pages-uploads")
 
 
@@ -21,6 +23,7 @@ def handle_upload(uploader_id, data):
     }
 
     event_json = json.dumps(event)
+    _logger.info(f"Processing upload {upload_id} by {uploader_id}")
     channel = pika_connection_manager.get_channel()
 
     gridfs.upload_from_stream("upload-{}.pdf".format(upload_id), data)

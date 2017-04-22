@@ -2,12 +2,16 @@ import os
 
 import pika.channel
 import pika.exceptions
+import logging
+
+_logger = logging.getLogger("edustor_upload.pika")
 
 
 class PikaConnectionManager:
     _pika_connection = None
 
     def __init__(self):
+        _logger.info("Initializing Pika connection")
         self._connect()
         channel = self.get_channel()
 
@@ -15,6 +19,7 @@ class PikaConnectionManager:
                                  exchange_type="topic",
                                  durable=True)
         channel.close()
+        _logger.info("Pika initialization finished")
 
     def get_channel(self):
         try:
@@ -32,4 +37,5 @@ class PikaConnectionManager:
                 self._pika_connection.close()
             except:
                 pass
+        _logger.info("Setting up new pika connection")
         self._pika_connection = pika.BlockingConnection(pika.ConnectionParameters(os.environ["edustor.rabbit.host"]))
