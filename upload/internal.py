@@ -7,7 +7,7 @@ from gridfs import GridFSBucket
 
 from upload import mongo, pika_connection_manager
 
-gridfs = GridFSBucket(mongo['edustor-files'])
+gridfs = GridFSBucket(mongo['edustor-files'], "pages-uploads")
 
 
 def handle_upload(uploader_id, data):
